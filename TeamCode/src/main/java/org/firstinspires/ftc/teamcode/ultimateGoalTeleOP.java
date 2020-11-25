@@ -56,8 +56,14 @@ public class ultimateGoalTeleOP extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftRearDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightRearDrive = null;
+    private DcMotor inputDrive = null;
+    private DcMotor outputDrive = null;
+    private DcMotor transportDrive1 = null;
+    private DcMotor transportDrive2 = null;
 
     @Override
     public void runOpMode() {
@@ -67,13 +73,26 @@ public class ultimateGoalTeleOP extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_drive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
+        inputDrive = hardwareMap.get(DcMotor.class, "input_drive");
+        outputDrive = hardwareMap.get(DcMotor.class, "output_drive");
+        transportDrive1 = hardwareMap.get(DcMotor.class, "transport_drive_1");
+        transportDrive2 = hardwareMap.get(DcMotor.class, "transport_drive_2");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftRearDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightRearDrive.setDirection(DcMotor.Direction.REVERSE);
+        inputDrive.setDirection(DcMotor.Direction.FORWARD);
+        outputDrive.setDirection(DcMotor.Direction.FORWARD);
+        transportDrive1.setDirection(DcMotor.Direction.FORWARD);
+        transportDrive2.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -102,8 +121,7 @@ public class ultimateGoalTeleOP extends LinearOpMode {
             // rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
