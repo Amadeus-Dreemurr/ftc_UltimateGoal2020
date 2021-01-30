@@ -100,32 +100,41 @@ public class ultimateGoalTeleOP extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            // Set power to the mecanum wheels
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
+            // translation: the magnitude of the translational motion is achieved
+            // by calculation the magnitude of the vector comprised of a x-directional
+            // translational motion and a y-directional translational motion. In other
+            // words, the magnitude of the net translational motion is the length of
+            // the hypotenuse of a right triangle with leg of length of the magnitude
+            // of the x-directional motion and the y-directional motion respectively
+            double translation = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
 
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
+            // translationAngle: the angle(theta) to the direction in which the robot
+            // travels is calculated by subtracting pi/4 from the angle to the direction
+            // of the positive x-axis which is the inverse tangent of the quotient of
+            // y-directional motion and x-directional motion
+            double tranlationAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI/4;
 
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            // rotation: this is a constant which is modified to every wheel to turn the
+            // robot while driving
+            double rotation = gamepad1.right_stick_x;
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            // Calculate the power at each wheel
+            final double v1 = translation*Math.cos(tranlationAngle)+rotation;
+            final double v2 = translation*Math.sin(tranlationAngle)-rotation;
+            final double v3 = translation*Math.sin(tranlationAngle)+rotation;
+            final double v4 = translation*Math.cos(tranlationAngle)-rotation;
 
-            // Send calculated power to wheels
-
+            // Send the calculated power to wheel
+            leftFrontDrive.setPower(v1);
+            leftRearDrive.setPower(v2);
+            rightFrontDrive.setPower(v3);
+            rightRearDrive.setPower(v4);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            //telemetry.addData("Status", "Run Time: " + runtime.toString());
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
     }
