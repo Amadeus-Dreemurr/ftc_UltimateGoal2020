@@ -132,6 +132,14 @@ public class ultimateGoalTeleOP extends LinearOpMode {
             rightFrontDrive.setPower(v3);
             rightRearDrive.setPower(v4);
 
+            //Set power to Thrower
+            if(gamepad2.left_bumper){
+                inputDrive.setPower(1);
+            }
+            transportDrive1.setPower(gamepad2.right_stick_y);
+            transportDrive2.setPower(gamepad2.right_stick_y);
+            outputDrive.setPower(gamepad2.right_stick_y);
+
             // Show the elapsed game time and wheel power.
             //telemetry.addData("Status", "Run Time: " + runtime.toString());
             //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
